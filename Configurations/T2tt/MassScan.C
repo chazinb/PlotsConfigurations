@@ -7,6 +7,9 @@
 #include <TStyle.h>
 #include <TLegend.h>
 #include <TLatex.h>
+#include <TTree.h>
+#include <fstream>
+#include <iostream>
 
 void MassScan() {
 

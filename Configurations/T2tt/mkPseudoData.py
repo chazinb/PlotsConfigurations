@@ -4,7 +4,8 @@ import json
 import sys
 import ROOT
 import optparse
-import LatinoAnalysis.Gardener.hwwtools as hwwtools
+import hwwtools as hwwtools
+#import LatinoAnalysis.Gardener.hwwtools as hwwtools
 import logging
 import os.path
 import math
@@ -64,8 +65,8 @@ class PseudoDataFactory:
           if structureFile[sampleName]['isSignal'] == 0 and structureFile[sampleName]['isData'] == 0:
             self.backgrounds.append(sampleName)
           
-        if not os.path.isdir (self._outputDir + "/") :
-          os.mkdir (self._outputDir + "/")
+        #if not os.path.isdir (self._outputDir + "/") :
+        #  os.mkdir (self._outputDir + "/")
           
         self._outFile = ROOT.TFile.Open( self._inputDir + '/nominal/' + analysisName + '/' + outputFileName + ".root", 'recreate')
         ROOT.TH1.SetDefaultSumw2(True)
@@ -113,10 +114,11 @@ class PseudoDataFactory:
              # fileIn.Close()
               
             for sampleName in self.backgrounds:
+              print "sample = ", sampleName
               inputFile = inputDir + '/nominal/' + analysisName + '/' + sampleName + '.root'
               fileIn = ROOT.TFile(inputFile, "READ")
               histo = fileIn.Get(shapeName)
-              histo.SetName('histo_' + sampleName)
+         #     histo.SetName('histo_' + sampleName)
               #histo.Scale(lumi)
               histo = self._checkBadBins(histo)
               #if sampleName == "06_WW" : # VRtest4
@@ -195,7 +197,7 @@ class PseudoDataFactory:
             if yValue <= 0. :
                 histo.SetBinContent(iBin, 0.001)
         histoIntegralCorrected = histo.Integral()
-        if (histoIntegralCorrected!=histoIntegral) :
+        if (histoIntegralCorrected!=histoIntegral and histoIntegral != 0) :
             histo.Scale(histoIntegralCorrected/histoIntegral)
         return histo
             
