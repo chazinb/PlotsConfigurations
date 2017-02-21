@@ -163,22 +163,22 @@ nuisances['BtagFS']  = {
     'type'  : 'shape',
     }
 
-#nuisances['JES']  = {
-#    'name'  : 'JES', 
-#    'samples'  : {
-#        'T2tt'                             : '1.',
-#        '03_VZ'                            : '1.',
-#        '04_TTTo2L2Nu'                     : '1.',
-#        '06_WW'                            : '1.',
-#        '05_ST'                            : '1.',
-#        '09_TTW'                           : '1.',
-#        '10_TTZ'                          : '1.',
-#        '07_ZJets'                         : '1.',
-#        '02_WZTo3LNu'                      : '1.',
-#        },
-#    'type'  : 'shape',
-#    }
-#
+nuisances['JES']  = {
+    'name'  : 'JES', 
+    'samples'  : {
+        'T2tt'                             : '1.',
+        '03_VZ'                            : '1.',
+        '04_TTTo2L2Nu'                     : '1.',
+        '06_WW'                            : '1.',
+        '05_ST'                            : '1.',
+        '09_TTW'                           : '1.',
+        '10_TTZ'                          : '1.',
+        '07_ZJets'                         : '1.',
+        '02_WZTo3LNu'                      : '1.',
+        },
+    'type'  : 'shape',
+    }
+
 # Stat
 
 nuisances['stat']  = {
