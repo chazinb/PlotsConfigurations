@@ -152,7 +152,8 @@ void VR1Fit(TString FitFileName, TString ShapeFileName, TString OutputDirectory,
    * Save the BkgHisto output histograms. 
    * Create a new DataHisto[ch] storing the ratio Data/MC in each bin. It is saved and called "Ratio"
    */  
-  for (int ch = 0; ch<nChannels+1; ch++) {
+  for (int ch = 0; ch<nChannels+1; ch++)
+  {
 
     DataHisto[ch]->Write();
     BkgHisto[ch]->Write();
