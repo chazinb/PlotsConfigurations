@@ -4,7 +4,7 @@
 *
 *
 *      This script uses the mlfit.root from combine MasLikeliHoodFit performing as input. It gets the shape uncertainty 
-*      between the data and mc backgorund shapes in each of the Validation Regions (VR), namely, Validation Region after 
+*      between the data and mc background shapes in each of the Validation Regions (VR), namely, Validation Region after 
 *      asking a b jet (Tag) and Validation Region after vetoing a b jet (NoTag).                 
 *      
 *      Name of regions to perform the fit: VR1Tag, VR1NoTag, VR1 => mlfitVR1Tag.root, mlfitVR1NoTag.root, mlfitVR1.root 
@@ -14,7 +14,7 @@
 *      Output dir:       "./Datacards"
 *      Output suffix:    "Tag", "NoTag"
 *
-*      * == "./Datacards/ValidationRegions/" 
+*      * == "./Datacards/ValidationRegions/" ### ¿QUÉ ES ÉSTO? CARPETA DONDE SE GUARDAN LOS OUTPUTS?
 *
 *
 * ================================================================================================================================
@@ -51,53 +51,50 @@ TString FitDirectory = "shapes_fit_b";
 bool VR1FitSplitChannels = false;
 TString shapeRoot = "./Shapes/Shapes_mStop-250to350_Sm300_Xm125.root"; // You can use any root file for whatever mass point. Never mind the mass point in study (mc background does not change)   
 
-//-------------------------
-//   VR1Fit
-//-------------------------
-/*
-    TString FitFileName     => Input fit file  
-    TString ShapeFileName   => Input shape file
-    TString OutputDirectory => Output dir
-    TString FitRegion       => Output suffix 
-*/
-
-
+/*-------------------------
+ *        VR1Fit
+ * -------------------------
+ * ¿UNA DESCRIPCIÓN GENERAL DE LO QUE HACE ESTA FUNCIÓN?
+ * 
+ *   @param TString FitFileName     => Input fit file  
+ *   @param TString ShapeFileName   => Input shape file
+ *   @param TString OutputDirectory => Output dir
+ *   @param TString FitRegion       => Output suffix 
+ */
 void VR1Fit(TString FitFileName, TString ShapeFileName, TString OutputDirectory, TString FitRegion) 
 {
-
   // open the input files
   TFile *FitFile    = new TFile(FitFileName, "read");
   TFile *ShapeVRFile  = new TFile(ShapeFileName, "read");
   TFile *ShapeFile  = new TFile(shapeRoot, "read"); 
 
-  // number of bins and edges of the variable histogram. For the moment only one variable/histogram
+  // Set number of bins and edges of the variable histogram. For the moment only one variable/histogram
   int nBins = 7; float LowEdgeHisto = 0., HighEdgeHisto = 140.;
 
   // init the output histograms for data and backgrounds 
   TH1F *DataHisto[nChannels+1], *BkgHisto[nChannels+1];
   
   for (int ch = 0; ch<nChannels; ch++) 
-   {
+  {
     // exclusive channels: ee, mm, em 
     DataHisto[ch]    = new TH1F("Data_"  + Channel[ch], "", nBins, LowEdgeHisto, HighEdgeHisto);
     BkgHisto[ch]     = new TH1F("Bkg_"   + Channel[ch], "", nBins, LowEdgeHisto, HighEdgeHisto);
 
     if (ch==nChannels-1) 
-     {
+    {
       // inclusive channel: ll 
       DataHisto[nChannels]    = new TH1F("Data_all",  "", nBins, LowEdgeHisto, HighEdgeHisto);
       BkgHisto[nChannels]     = new TH1F("Bkg_all",   "", nBins, LowEdgeHisto, HighEdgeHisto);
-     }
+    }
 
   }
 
-  /* Loop 1
- * ----------
-  Looping over the three exclusive channels (ee,mm,em) to fill the DataHisto and BckHisto output histogram per channel by adding selectively the input h 
-    // Fill the DataHisto output histogram per exclusive channel (ee,mm,em) by adding the data histogram shape stored in the input shape file  
-    // Fill the BckHisto output histogram per exclusive channel (ee,mm,em) by adding selectively the best fit histogram shape of each background proccess stored in the input fit file
+ /* Loop 1
+  * ----------
+  * Looping over the three exclusive channels (ee,mm,em) to fill the DataHisto and BckHisto output histogram per channel by adding selectively the input h 
+  *    - Fill the DataHisto output histogram per exclusive channel (ee,mm,em) by adding the data histogram shape stored in the input shape file  
+  *    - Fill the BackHisto output histogram per exclusive channel (ee,mm,em) by adding selectively the best fit histogram shape of each background proccess stored in the input fit file
   */
-
   // Special reference for data input shape file, namely, VR1_ + Tag, VR1_ + NoTag regions
   TString VRName  = "VR1_" + FitRegion;
 
@@ -126,7 +123,7 @@ void VR1Fit(TString FitFileName, TString ShapeFileName, TString OutputDirectory,
 	ThisBackHisto->SetBinError(ib, FitBackHisto->GetBinError(ib));
 
       }
-      // Add selecting the backgrounds by FitRegion 
+      // Add selecting the backgrounds by FitRegion  ###No entiendo qué quiere decir esto...........
       if (FitRegion=="Tag" && bkg<2) BkgHisto[ch]->Add(ThisBackHisto);// For the Tag FitRegion we add only "04_TTTo2L2Nu", "05_ST", "06_WW" background
       else if (FitRegion=="NoTag" && bkg==2) BkgHisto[ch]->Add(ThisBackHisto); // For the NoTag FitRegion we add only "06_WW" background
       else DataHisto[ch]->Add(ThisBackHisto, -1.); // For the Tag FitRegion we subtract "03_VZ", "07_Zjets", "09_TTW", "10_TTZ"; For the NoTag FitRegion we subtract "04_TTTo2L2Nu", "05_ST", "03_VZ", "07_Zjets", "09_TTW", "10_TTZ"
@@ -145,10 +142,10 @@ void VR1Fit(TString FitFileName, TString ShapeFileName, TString OutputDirectory,
   TFile *OutputFile = new TFile(OutputFileName, "recreate");
   
   /* Loop 2
-    --------
-    Save the DataHisto and BckHisto output histograms. 
-    Create a new one to store the ratio Data/MC in each bin. It is save in the same file and called "Ratio"
-  */  
+   * --------
+   * Save the DataHisto and BkgHisto output histograms. 
+   * Create a new one to store the ratio Data/MC in each bin. It is save in the same file and called "Ratio"
+   */  
   for (int ch = 0; ch<nChannels+1; ch++) {
 
     DataHisto[ch]->Write();
@@ -161,15 +158,14 @@ void VR1Fit(TString FitFileName, TString ShapeFileName, TString OutputDirectory,
 
   }
 
-  /* Loop 3
-    --------
-    Create the shape uncertainty histograms for each channel (ee,mm,em) and each cut 
-    Stop_02_VR1_Tag          Stop_02_SR1_Tag            Stop_02_SR2_Tag            Stop_02_SR3_Tag
-    Stop_02_VR1_NoTag        Stop_02_SR1_NoTag          Stop_02_SR2_NoTag          Stop_02_SR3_NoTag
- 
- */
-  for (int ct = 0; ct<ncut; ct++) {
-
+ /* Loop 3
+  * --------
+  * Create the shape uncertainty histograms for each channel (ee,mm,em) and each cut 
+  * Stop_02_VR1_Tag          Stop_02_SR1_Tag            Stop_02_SR2_Tag            Stop_02_SR3_Tag
+  * Stop_02_VR1_NoTag        Stop_02_SR1_NoTag          Stop_02_SR2_NoTag          Stop_02_SR3_NoTag 
+  */
+  for (int ct = 0; ct<ncut; ct++)
+  {
     TString SRName = scut[ct];
     SRName.ReplaceAll("Stop/02_", ""); // forget inconvienient prefix
     
@@ -177,14 +173,16 @@ void VR1Fit(TString FitFileName, TString ShapeFileName, TString OutputDirectory,
     //if (SRName!="VR1_NoTag" && !SRName.Contains("SR")) continue;
     //if (SRName=="VR1_NoTag" && FitRegion=="NoTag") continue;
     
-    for (int ch = 0; ch<nChannels; ch++) {
+    for (int ch = 0; ch<nChannels; ch++)
+    {
     
       TString CutName = SRName + "_" + Channel[ch]; // Following the storage criteria of mkdatacards.py
 
       OutputFile->mkdir(CutName);
       OutputFile->cd(CutName);
 
-      for (int tbg = 0; tbg<=2; tbg++) {
+      for (int tbg = 0; tbg<=2; tbg++)
+      {
 
 	if (FitRegion=="Tag" && tbg==2) continue;  // use "04_TTTo2L2Nu", "05_ST" avoid "06_WW" background 
 	if (FitRegion=="NoTag" && tbg<2) continue; // use "06_WW" avoid "04_TTTo2L2Nu", "05_ST" background
@@ -206,15 +204,21 @@ void VR1Fit(TString FitFileName, TString ShapeFileName, TString OutputDirectory,
 	ThisHisto->SetName(HistoName + "Up");
 	ThisHisto->Write();
 
-      }
-      
+      }      
     }
-
   }
 
   OutputFile->Close();
   
 }
+
+/* FitAnalyzer
+ * -------------
+ *  Ya que has descrito las anteriores funciones, estaría bien escribir una descripción a esta, aunque sea el 20% fácil :P
+ *  
+ *  @param TString Action ..................
+ *  
+ */
 
 void FitAnalyzer(TString Action) {
   
