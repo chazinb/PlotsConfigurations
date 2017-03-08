@@ -1,3 +1,10 @@
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Recipe to use the "VR startegy" in order to get the shape uncertainties histograms
+# for TTbar + TW and WW backgrounds.
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#
 # Create datacards for VR in Tag and NoTag selection (using configurationsVR.py)
 ./createDatacardsVR.sh
 
@@ -27,3 +34,8 @@ root -l -b -q 'FitAnalyzer.C("FitVR1")'
 # WW background. The NoTag region has a big contribution of TTbar besides of WW while the Tag region all the 
 # background is basically TTbar and TW. This is the why it is got the Top shape uncertainty first and then use it 
 # to get the WW incertainty shape.
+#
+#----------------------------------------------------------------------------------------------------------------
+##  After all of this, you have to run again the datacard machine for all the SR and get the limits.
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
