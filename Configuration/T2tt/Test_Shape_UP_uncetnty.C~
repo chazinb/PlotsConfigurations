@@ -1,0 +1,113 @@
+# include "TFile.h"
+# include "TH1F.h"
+#include "TSystem.h"
+#include <fstream>
+#include <iostream>
+
+
+
+
+
+
+TH1F* CheckYields (TH1F* histo)
+{     
+      int nBins = histo -> GetNbinsX();
+      std::cout<<"nbins "<< nBins <<std::endl;
+      float histoIntegral = histo -> Integral();
+      std::cout<<"Integral " << histoIntegral<<std::endl;
+      for (int n = 1; n <= nBins; n++ )
+      {
+        float yValue = histo -> GetBinContent(n);
+        if (yValue <= 0.) histo -> SetBinContent (n, 0.001);
+      }
+      float correctedIntegral = histo -> Integral();
+      if (correctedIntegral != histoIntegral && histoIntegral!= 0) histo -> Scale (correctedIntegral/histoIntegral);
+      std::cout << "corrected Integral" << correctedIntegral << std::endl; 
+      return histo;
+
+}
+
+/*
+TH1F* HistoTest (TFile* fileIn, TString cut, TString sampleName, TString channel)
+
+ {
+      
+ *       *       * @param TString cut = "02_VR1_Tag", "02_VR1_NoTa
+ *             
+
+         std::cout << "3.1" << std::endl;
+     TH1F*   histoIn   = (TH1F*) fileIn -> Get("Stop/" + cut + "/h_MT2ll_" + channel);
+          
+         std::cout << histoIn-> GetNbinsX()<<std::endl;
+         std::cout << histoIn-> Integral()<<std::endl;
+         std::cout << "3.2" << std::endl;
+    TH1F* histo = CheckYields (histoIn);
+
+         std::cout << "3.3" << std::endl;
+     histo->Scale(1.);
+     histo->SetBinContent(1, histo->GetBinContent(1)*1.000);
+     histo->SetBinContent(2, histo->GetBinContent(2)*1.017);
+     histo->SetBinContent(3, histo->GetBinContent(3)*1.032);
+     histo->SetBinContent(4, histo->GetBinContent(4)*1.050);
+     histo->SetBinContent(5, histo->GetBinContent(5)*1.067);
+     histo->SetBinContent(6, histo->GetBinContent(6)*1.082);
+     histo->SetBinContent(7, histo->GetBinContent(7)*1.100);
+
+
+    return histo;  return histoIn; fileIn -> Close(); 
+ }*/
+
+void Create_HistoTest(TString inputDir = "Datacards/ValidationRegions/")
+
+ {   std::cout << "init" << std::endl;  
+     const int nsample = 3;  TString sampleName [nsample] = {"06_WW", "05_ST", "04_TTTo2L2Nu"};
+     const int ncut   = 2;  TString cutName [ncut]    = {"VR1_Tag", "VR1_NoTag"};
+     enum { ee, mm, em, nchannel}; const TString schannel[nchannel] = {"ee", "mm","em"}; 
+   
+     gSystem->mkdir("VRTesting/", kTRUE);
+
+     std::cout << "start the loops" << std::endl;
+
+     for (int i = 0; i < nsample -1; i ++)
+     {
+       std::cout << sampleName[i] << std::endl;  
+       TString outFileName = ""; 
+       if (sampleName[i] == "06_WW")          outFileName = "06_WW_VRTest.root";
+       if (sampleName[i] == "05_ST" )         outFileName = "05_ST_VRTest.root";
+       if (sampleName[i] == "04_TTTo2L2Nu")   outFileName = "04_TTTo2L2Nu_VRTest.root";
+
+       TFile* outFile =  new TFile ("VRTesting/" + outFileName, "recreate"); 
+       
+       for (int j = 0; j < ncut; j ++)
+       {
+        std::cout << cutName[j] << std::endl;
+        for ( int k = 0; k < 3 ; k ++)
+        {
+         std::cout << schannel[k] << std::endl;
+       
+         TString inputFile = inputDir + cutName[j] + "_" + schannel[k] + "/MT2ll/shapes/" + "histos_" +  cutName[j] + "_" + schannel[k] + ".root";
+         TFile*  fileIn    = new TFile(inputFile, "read");
+//         TH1F* histoOut = HistoTest ( fileIn, sampleName[i], cutName[j], schannel[k]);
+         TH1F*   histoIn   = (TH1F*) fileIn -> Get("histo_" + sampleName[i]);  
+         TH1F* histo = CheckYields (histoIn);
+
+         histo->Scale(1.);
+     histo->SetBinContent(1, histo->GetBinContent(1)*1.000);
+     histo->SetBinContent(2, histo->GetBinContent(2)*1.017);
+     histo->SetBinContent(3, histo->GetBinContent(3)*1.032);
+     histo->SetBinContent(4, histo->GetBinContent(4)*1.050);
+     histo->SetBinContent(5, histo->GetBinContent(5)*1.067);
+     histo->SetBinContent(6, histo->GetBinContent(6)*1.082);
+     histo->SetBinContent(7, histo->GetBinContent(7)*1.100);
+         
+     TH1F* histoOut = (TH1F*)  histo -> Clone();
+     fileIn -> Close();
+     histoOut -> Write();
+        }
+     //  fileIn -> Close(); 
+       }
+      }      
+
+     std::cout << "FIN" << std::endl;
+ }      
+  

@@ -1,0 +1,24 @@
+## Shape input card
+imax 1 number of channels
+jmax * number of background
+kmax * number of nuisance parameters
+----------------------------------------------------------------------------------------------------
+bin         SR1_NoTag_ee
+observation 1225
+shapes  *           * shapes/histos_SR1_NoTag_ee.root     histo_$PROCESS histo_$PROCESS_$SYSTEMATIC
+shapes  data_obs           * shapes/histos_SR1_NoTag_ee.root     histo_Data
+----------------------------------------------------------------------------------------------------
+bin                                                                             SR1_NoTag_ee                       SR1_NoTag_ee                       SR1_NoTag_ee                       SR1_NoTag_ee                       SR1_NoTag_ee                       SR1_NoTag_ee                       SR1_NoTag_ee                       SR1_NoTag_ee                       SR1_NoTag_ee                       
+process                                                                         T2tt                               06_WW                              09_TTW                             07_ZJets                           03_VZ                              05_ST                              02_WZTo3LNu                        10_TTZ                             04_TTTo2L2Nu                       
+process                                                                         0                                  1                                  2                                  3                                  4                                  5                                  6                                  7                                  8                                  
+rate                                                                            20.4766                            180.0636                           2.7995                             10.9805                            1.5424                             127.2585                           30.0863                            2.6441                             866.7032                           
+----------------------------------------------------------------------------------------------------
+
+lumiMoriond17                                               lnN                 1.062                              1.062                              1.062                              1.062                              1.062                              1.062                              1.062                              1.062                              1.062                              
+Topnorm_SR1_ee                                              rateParam           SR1_NoTag_ee                       04_TTTo2L2Nu        1.0000                             
+
+WWnorm_SR1_ee                                               rateParam           SR1_NoTag_ee                       06_WW               1.0000                             
+
+
+----------------------------------------------------------------------------------------------------
+
