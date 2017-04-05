@@ -9,7 +9,7 @@ inputDir = '/afs/cern.ch/user/b/bchazinq/work/CMSSW_8_0_5/src/AnalysisCMS/minifi
 #inputDir = '/afs/cern.ch/user/s/scodella/work/Stop/CodeDevelopment/CMSSW_8_0_21/src/AnalysisCMS/minitreesB/rootfiles/'
 
 # luminosity to normalize to
-lumi = 36.
+lumi = 35.867
 
 # set of mc samples: 0j1j, vbf
 #mcset = 'general.py'
