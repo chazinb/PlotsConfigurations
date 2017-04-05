@@ -1,4 +1,51 @@
 #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# New Recipe to use the "VR startegy" in order to get the shape uncertainties histograms
+# for TTbar + TW and WW backgrounds.
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 
+# The shape uncertainty may not be correlated bin by bin in all SR, or even more, it may change in the transition between the 
+# VR to SR's. To take the different behaviour of the main background proccesse in each bin and in each region of this analysis,
+# the shape uncertainty strategy has changed.
+# 
+# The shape uncertainty is included in the datacard as type: shape nuisance, varing bin by bin in function of the
+# signal region (SR). The "systematic" histograms up - down associated to this uncertainty are computed in 
+# mkShapesFromHistos.py.  
+# 
+# Summary: 
+#                     
+#                     
+#    In datacard
+#         
+#     SR     process          |  syst.Uncert: bin     4               5                  6               7
+#    ----------------------------------------------------------------------------------------------------------------
+#  
+#     1    Top = TTbar & TW     type: shape          5%              5%                 15%              30%                                            
+#     2    Top = TTbar & TW     type: shape          5%              5%                 15%              30%  
+#     3    Top = TTbar & TW     type: shape          5%              5%                 15%              30%
+#
+#     1          WW             type: shape          5%              5%                 15%              30%
+#     2          WW             type: shape          5%              5%                 15%              30%
+#     3          WW             type: shape          5%              5%                 15%              30%
+#
+#
+#
+#    In systematic histos up (for datacard)
+#
+#    SR     process          |  syst.Uncert: bin        4               5                  6               7
+#    ----------------------------------------------------------------------------------------------------------------
+#     1    Top = TTbar & TW    (+) Up (-) down          5%              10%               20%             30%
+#     2    Top = TTbar & TW    (+) Up (-) down          5%              10%               20%             30%
+#     3    Top = TTbar & TW    (+) Up (-) down          5%              10%               20%             30%
+#
+#     1          WW            (+) Up (-) down          5%              10%               20%             30%
+#     2          WW            (+) Up (-) down          5%              10%               20%             30%
+#     3          WW            (+) Up (-) down          5%              10%               20%             30%
+# 
+#
+#
+#
+#                     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Recipe to use the "VR startegy" in order to get the shape uncertainties histograms
 # for TTbar + TW and WW backgrounds.
